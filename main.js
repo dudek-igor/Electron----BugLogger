@@ -1,6 +1,6 @@
 const path = require("path");
 const url = require("url");
-const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, BrowserWindow, ipcMain, Menu } = require("electron");
 require("dotenv").config();
 const conenctDB = require("./config/db");
 const Log = require("./models/Log");
@@ -11,6 +11,7 @@ conenctDB();
 let mainWindow;
 
 let isDev = false;
+const isMac = process.platform === "darwin" ? true : false;
 
 if (
   process.env.NODE_ENV !== undefined &&
@@ -71,7 +72,43 @@ function createMainWindow() {
   mainWindow.on("closed", () => (mainWindow = null));
 }
 
-app.on("ready", createMainWindow);
+app.on("ready", () => {
+  createMainWindow();
+  const mainMenu = Menu.buildFromTemplate(menu);
+  Menu.setApplicationMenu(mainMenu);
+});
+
+const menu = [
+  ...(isMac ? [{ role: "appMenu" }] : []),
+  {
+    role: "fileMenu",
+  },
+  {
+    role: "editMenu",
+  },
+  {
+    label: "Logs",
+    submenu: [
+      {
+        label: "Clear Logs",
+        click: () => clearLogs(),
+      },
+    ],
+  },
+  ...(isDev
+    ? [
+        {
+          label: "Developer",
+          submenu: [
+            { role: "reload" },
+            { role: "forcereload" },
+            { type: "separator" },
+            { role: "toggledevtools" },
+          ],
+        },
+      ]
+    : []),
+];
 
 // Load Logs
 ipcMain.on("logs:load", sendLogs);
@@ -83,7 +120,7 @@ async function sendLogs() {
     console.log(error);
   }
 }
-// Created Logs
+// Created Log
 ipcMain.on("logs:add", async (e, item) => {
   try {
     await Log.create(item);
@@ -93,7 +130,7 @@ ipcMain.on("logs:add", async (e, item) => {
   }
 });
 
-//Delete Logs
+//Delete Log
 ipcMain.on("logs:delete", async (e, id) => {
   try {
     await Log.findOneAndDelete({ _id: id });
@@ -102,6 +139,16 @@ ipcMain.on("logs:delete", async (e, id) => {
     console.log(err);
   }
 });
+
+// Clear all logs
+async function clearLogs() {
+  try {
+    await Log.deleteMany({});
+    mainWindow.webContents.send("logs:clear");
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {

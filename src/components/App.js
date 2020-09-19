@@ -16,6 +16,10 @@ const App = () => {
   useEffect(() => {
     ipcRenderer.send("logs:load");
     ipcRenderer.on("logs:get", (e, logs) => setLogs(JSON.parse(logs)));
+    ipcRenderer.on("logs:clear", () => {
+      setLogs([]);
+      showAlert("Logs Cleared");
+    });
   }, []);
   const addItem = (item) => {
     if (item.text === "" || item.user === "" || item.priority === "") {
