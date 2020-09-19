@@ -10,12 +10,11 @@
 1.  Clone Repo
 2.  Install - `npm install`
 3.  Add your datebase - `Create .env file in the root directory of your project.Add variables DB_CONFIG=<yourDatabase>`
-4.  Chose platform:
-    For mac - `npm run package-mac`
-    For win - `npm run package-win`
-    For linux - `npm run package-linux`
-4.  Enjoy
-
+4.  Check your app `npm start`
+5.  Before build app, change in 'config/db.js', process.env.DB_CONFIG to your connection string from datebase.
+Without this your app dont run after package
+6.  Build - 'npm run package'
+6.  Enjoy
 ```
 
 ### Used:
