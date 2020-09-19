@@ -9,7 +9,7 @@
 ```bash
 1.  Clone Repo
 2.  Install - `npm install`
-3.  Add your datebase - `Create .env file in the root directory of your project. Add variables DB_CONFIG=<yourDatabase>`
+3.  Add your datebase - `Create .env file in the root directory of your project.Add variables DB_CONFIG=<yourDatabase>`
 4.  Chose platform:\
     For mac - `npm run package-mac`\
     For win - `npm run package-win`\
@@ -24,6 +24,9 @@
 - React Bootstrap,
 - Bootstrap,
 - Moment.js
+- Dotenv
+- MongoDB
+- Mongoose
 
 ### License
 
