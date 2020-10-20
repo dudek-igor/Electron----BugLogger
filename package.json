@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "App bug tracker for teams",
   "author": "Igor Dudek",
-  "license": "ISC",
+  "license": "MIT",
   "engines": {
     "node": ">=9.0.0",
     "npm": ">=5.0.0",
