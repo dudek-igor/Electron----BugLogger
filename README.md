@@ -30,4 +30,4 @@ Without this app dont run after package.
 
 ### License
 
-ISC
+MIT
